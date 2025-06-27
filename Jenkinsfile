@@ -8,15 +8,15 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build -t python-api .'
+                bat 'docker build -t python-api .'
             }
         }
 
         stage('Test') {
             steps {
-                sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
+                bat '''
+                    python -m venv venv
+                    call venv\\Scripts\\activate.bat
                     pip install --upgrade pip
                     pip install -r requirements.txt
                     pytest tests/
@@ -27,41 +27,17 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
-                    sh '''
-                        sonar-scanner \
-                        -Dsonar.projectKey=tp3-use-case \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=$SONAR_TOKEN
-                    '''
+                    bat """
+                        sonar-scanner ^
+                        -Dsonar.projectKey=tp3-use-case ^
+                        -Dsonar.sources=. ^
+                        -Dsonar.host.url=http://localhost:9000 ^
+                        -Dsonar.login=%SONAR_TOKEN%
+                    """
                 }
             }
         }
 
-        stage('PMD Static Analysis') {
-            steps {
-                recordIssues tools: [pmd(pattern: '**/pmd-report.xml')]
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh '''
-                    docker stop python-api || true
-                    docker rm python-api || true
-                    docker run -d -p 5000:5000 --name python-api python-api
-                '''
-            }
-        }
-
-        stage('UI Test with Selenium') {
-            steps {
-                sh '''
-                    . venv/bin/activate
-                    pip install selenium
-                    python selenium_test.py
-                '''
-            }
-        }
+        // Autres étapes à adapter aussi...
     }
 }

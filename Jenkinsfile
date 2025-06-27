@@ -31,13 +31,22 @@ pipeline {
                         sonar-scanner ^
                         -Dsonar.projectKey=tp3-use-case ^
                         -Dsonar.sources=. ^
-                        -Dsonar.host.url=http://localhost:9000 ^
+                        -Dsonar.host.url=%SONAR_HOST_URL% ^
                         -Dsonar.login=%SONAR_TOKEN%
                     """
                 }
             }
         }
 
-        // Autres étapes à adapter aussi...
+        // Tu peux ajouter ici une étape 'Quality Gate' si nécessaire
+        /*
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        */
     }
 }

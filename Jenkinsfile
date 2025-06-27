@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'docker build -t python-api .'
+                 bat 'docker run --rm -e PYTHONPATH=/app python-api pytest tests/'
             }
         }
 

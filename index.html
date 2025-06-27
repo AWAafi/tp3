@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Square</title>
+    <script>
+        async function getSquare() {
+            const number = document.getElementById('number').value;
+            const response = await fetch(`http://127.0.0.1:5000/api/square?number=${number}`);
+            const data = await response.json();
+            
+            if (data.result !== undefined) {
+                document.getElementById('result').innerText = `Résultat : ${data.result}`;
+            } else {
+                document.getElementById('result').innerText = `Erreur : ${data.error}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Calcul du carré d’un nombre</h2>
+    <input type="number" id="number" placeholder="Entrez un nombre">
+    <button onclick="getSquare()">Calculer</button>
+    <p id="result"></p>
+</body>
+</html>

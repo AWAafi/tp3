@@ -8,13 +8,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'docker build -t python-api .'
+                sh 'docker build -t python-api .'
             }
         }
 
         stage('Test') {
             steps {
-                bat """
+                sh """
                     python -m venv venv ^
                     && call venv\\Scripts\\activate.bat ^
                     && pip install --upgrade pip ^
@@ -27,7 +27,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
-                    bat """
+                    sh """
                         sonar-scanner ^
                         -Dsonar.projectKey=tp3-use-case ^
                         -Dsonar.sources=. ^

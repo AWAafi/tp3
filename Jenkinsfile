@@ -14,13 +14,13 @@ pipeline {
 
         stage('Test') {
             steps {
-                bat '''
-                    python -m venv venv
-                    call venv\\Scripts\\activate.bat
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
-                    pytest tests/
-                '''
+                bat """
+                    python -m venv venv ^
+                    && call venv\\Scripts\\activate.bat ^
+                    && pip install --upgrade pip ^
+                    && pip install -r requirements.txt ^
+                    && pytest tests/
+                """
             }
         }
 
@@ -31,15 +31,13 @@ pipeline {
                         sonar-scanner ^
                         -Dsonar.projectKey=tp3-use-case ^
                         -Dsonar.sources=. ^
-                        -Dsonar.host.url=%SONAR_HOST_URL% ^
-                        -Dsonar.login=%SONAR_TOKEN%
+                        -Dsonar.host.url=${SONAR_HOST_URL} ^
+                        -Dsonar.login=${SONAR_TOKEN}
                     """
                 }
             }
         }
 
-        // Tu peux ajouter ici une étape 'Quality Gate' si nécessaire
-        /*
         stage('Quality Gate') {
             steps {
                 timeout(time: 1, unit: 'MINUTES') {
@@ -47,6 +45,5 @@ pipeline {
                 }
             }
         }
-        */
     }
 }

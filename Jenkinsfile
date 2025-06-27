@@ -22,7 +22,7 @@ pipeline {
     steps {
         withSonarQubeEnv('SonarQubeServer') {
             bat """
-                sonar-scanner ^
+                "C:\\Users\\yombe\\Desktop\\sonar-scanner-7.1.0.4889-windows-x64\\bin\\sonar-scanner.bat" ^
                 -Dsonar.projectKey=tp3-use-case ^
                 -Dsonar.sources=. ^
                 -Dsonar.host.url=%SONAR_HOST_URL% ^
@@ -31,6 +31,7 @@ pipeline {
         }
     }
 }
+
 
 
         stage('Quality Gate') {

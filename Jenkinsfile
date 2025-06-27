@@ -18,19 +18,20 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQubeServer') {
-                    bat """
-                        sonar-scanner ^
-                        -Dsonar.projectKey=tp3-use-case ^
-                        -Dsonar.sources=. ^
-                        -Dsonar.host.url=${SONAR_HOST_URL} ^
-                        -Dsonar.login=${SONAR_TOKEN}
-                    """
-                }
-            }
+       stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQubeServer') {
+            bat """
+                sonar-scanner ^
+                -Dsonar.projectKey=tp3-use-case ^
+                -Dsonar.sources=. ^
+                -Dsonar.host.url=%SONAR_HOST_URL% ^
+                -Dsonar.login=%SONAR_TOKEN%
+            """
         }
+    }
+}
+
 
         stage('Quality Gate') {
             steps {

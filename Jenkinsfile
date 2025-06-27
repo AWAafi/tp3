@@ -14,13 +14,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                bat """
-                    python -m venv venv ^
-                    && call venv\\Scripts\\activate.bat ^
-                    && pip install --upgrade pip ^
-                    && pip install -r requirements.txt ^
-                    && pytest tests/
-                """
+                bat 'docker run --rm python-api pytest tests/'
             }
         }
 
